@@ -12,16 +12,8 @@ public class LoginUI extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
 
-//    public LoginUI() {
-//        setTitle("Login");
-//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//
-//        initComponents();
-//
-//        setSize(300, 150);
-//        setLocationRelativeTo(null); // Center the frame on screen
-//        setVisible(true);
-//    }
+
+
     public LoginUI() {
         setTitle("Login Form");
         setSize(800, 600);
@@ -31,45 +23,7 @@ public class LoginUI extends JFrame {
         initComponents();
     }
 
-//    private void initComponents() {
-//        JPanel panel = new JPanel(new GridBagLayout());
-//        GridBagConstraints constraints = new GridBagConstraints();
-//        constraints.insets = new Insets(5, 5, 5, 5);
-//        constraints.fill = GridBagConstraints.HORIZONTAL;
-//
-//        JLabel usernameLabel = new JLabel("Username:");
-//        constraints.gridx = 0;
-//        constraints.gridy = 0;
-//        panel.add(usernameLabel, constraints);
-//
-//        usernameField = new JTextField(15);
-//        constraints.gridx = 1;
-//        constraints.gridy = 0;
-//        panel.add(usernameField, constraints);
-//
-//        JLabel passwordLabel = new JLabel("Password:");
-//        constraints.gridx = 0;
-//        constraints.gridy = 1;
-//        panel.add(passwordLabel, constraints);
-//
-//        passwordField = new JPasswordField(15);
-//        constraints.gridx = 1;
-//        constraints.gridy = 1;
-//        panel.add(passwordField, constraints);
-//
-//        JButton loginButton = new JButton("Login");
-//        loginButton.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                login();
-//            }
-//        });
-//        constraints.gridx = 0;
-//        constraints.gridy = 2;
-//        constraints.gridwidth = 2;
-//        panel.add(loginButton, constraints);
-//
-//        getContentPane().add(panel, BorderLayout.CENTER);
-//    }
+
 
     private void initComponents() {
         // Main panel with BorderLayout
@@ -160,13 +114,13 @@ public class LoginUI extends JFrame {
             // Open chat application UI
             ChatApplicationUI chatUI = new ChatApplicationUI(username);
             chatUI.setVisible(true);
-
             // Close login window
             dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Invalid username or password. Please try again.");
             usernameField.setText("");
             passwordField.setText("");
+
         }
     }
 
