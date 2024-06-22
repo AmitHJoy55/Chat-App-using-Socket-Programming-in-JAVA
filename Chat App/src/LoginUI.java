@@ -78,9 +78,11 @@ public class LoginUI extends JFrame {
         // Left panel for picture
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BorderLayout());
-        JLabel pictureLabel = new JLabel(new ImageIcon("pictures/login_image.png")); // Update with the path to your image
-        pictureLabel.setBounds(0,0,400,600);
+        JLabel pictureLabel = new JLabel(new ImageIcon("pictures/login_image.jpg")); // Update with the path to your image
         leftPanel.add(pictureLabel, BorderLayout.CENTER);
+        leftPanel.setPreferredSize(new Dimension(400, 600)); // Set preferred size
+        leftPanel.setMinimumSize(new Dimension(400, 600)); // Set minimum size
+        leftPanel.setMaximumSize(new Dimension(600, 600)); // Set maximum size
 
         // Right panel for login form
         JPanel rightPanel = new JPanel(new GridBagLayout());
@@ -129,7 +131,10 @@ public class LoginUI extends JFrame {
         registerButton.setFont(new Font("SAN_SERIF", Font.BOLD, 16)); // Larger font size
         registerButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new Registration();
+                Registration regUI = new Registration();
+                regUI.setVisible(true);
+                // Close login window
+                dispose();
             }
         });
         constraints.gridx = 0;

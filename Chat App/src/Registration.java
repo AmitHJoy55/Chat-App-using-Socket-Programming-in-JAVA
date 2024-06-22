@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class Registration extends JFrame {
     private JTextField usernameField;
@@ -20,10 +23,16 @@ public class Registration extends JFrame {
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         // Left panel for picture
-        JPanel leftPanel = new JPanel();
-        leftPanel.setLayout(new BorderLayout());
-        JLabel pictureLabel = new JLabel(new ImageIcon("pictures/login_image.png")); // Update with the path to your image
-        leftPanel.add(pictureLabel, BorderLayout.CENTER);
+        JPanel leftPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                // Load and draw the image as the background
+                ImageIcon icon = new ImageIcon("pictures/login_image.jpg");
+                Image image = icon.getImage();
+                g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+            }
+        };
         leftPanel.setPreferredSize(new Dimension(400, 600)); // Set preferred size
         leftPanel.setMinimumSize(new Dimension(400, 600)); // Set minimum size
         leftPanel.setMaximumSize(new Dimension(600, 600)); // Set maximum size
@@ -80,7 +89,6 @@ public class Registration extends JFrame {
     }
 
     private void register() {
-        // Your registration logic here
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
 
@@ -89,10 +97,39 @@ public class Registration extends JFrame {
             return;
         }
 
-        // Save the user to the database
-        // TODO: Add your database code here
+        Connection connection = DatabaseConnection.getConnection();
+        if (connection != null) {
+            try {
+                String query = "INSERT INTO user (UserName, Password) VALUES (?, ?)";
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setString(1, username);
+                preparedStatement.setString(2, password);
 
-        JOptionPane.showMessageDialog(this, "Registration successful", "Success", JOptionPane.INFORMATION_MESSAGE);
+                int rowsAffected = preparedStatement.executeUpdate();
+                if (rowsAffected > 0) {
+                    JOptionPane.showMessageDialog(this, "Registration successful", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    // Open chat application UI
+                    ChatApplicationUI chatUI = new ChatApplicationUI(username);
+                    chatUI.setVisible(true);
+                    // Close login window
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Registration failed", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Database error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } finally {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Unable to connect to database", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public static void main(String[] args) {
